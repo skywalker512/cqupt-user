@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package cqupt_user;
+
+service UserController {
+  rpc CreateUser(CreateUserRequest) returns (StringDataResponse) {}
+  rpc FindAllUsers() returns (FindAllUsersResponse) {}
+}
+
+message CreateUserRequest {
+  CreateUserInput createUserInput = 1;
+  message CreateUserInput {
+    string mobile = 1;
+    string password = 2;
+  }
+}
+
+message StringDataResponse {
+  int32 code = 1;
+  string message = 2;
+  string data = 3;
+}
+
+message FindAllUsersResponse {
+  int32 code = 1;
+  string message = 2;
+  repeated UserData result = 3;
+}
+
+message UserData {
+  int32 id = 1;
+  string mobile = 2;
+  string createdAt = 3;
+  string updatedAt = 4;
+}
