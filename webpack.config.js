@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   entry: ['webpack/hot/poll?100', './src/main.ts'],
@@ -31,6 +32,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     // 排除 js 和 d.ts
     new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/]),
+    new CleanWebpackPlugin(),
   ],
   output: {
     path: path.join(__dirname, 'dist'),
