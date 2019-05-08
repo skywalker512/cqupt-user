@@ -7,7 +7,7 @@ import { CryptoUtil } from '../utils/crypto.util';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
-  controllers: [UserController, CryptoUtil],
-  providers: [UserService],
+  controllers: [UserController],
+  providers: [UserService, CryptoUtil],
 })
 export class UserModule {}
