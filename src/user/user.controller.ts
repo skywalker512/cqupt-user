@@ -11,14 +11,20 @@ export class UserController {
   ) { }
 
   @GrpcMethod()
-  async createUser(payload: { createUserInput: CreateUserInput }): Promise<IResponseBase>{
-    await this.userService.creatUser(payload.createUserInput)
-    return { code: 300, message: '创建用户成功' }
+  async register(payload: { mobile: string, password: string }): Promise<IResponseBase>{
+    const result = await this.userService.register(payload.mobile, payload.password)
+    return { code: 200, message: '用户注册成功', result }
   }
 
   @GrpcMethod()
   async findAllUsers(): Promise<IResponseBase> {
     const result = await this.userService.findAllUsers()
     return { code: 200, message: '查询所有用户成功', result }
+  }
+
+  @GrpcMethod()
+  async login(payload: { mobile: string, password: string }): Promise<IResponseBase> {
+    const result = await this.userService.login(payload.mobile, payload.password)
+    return { code: 200, message: '登录成功', result }
   }
 }
