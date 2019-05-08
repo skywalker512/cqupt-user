@@ -1,7 +1,6 @@
 import { Controller, Inject } from '@nestjs/common';
 import { UserService } from './user.service';
 import { GrpcMethod } from '@nestjs/microservices';
-import { CreateUserInput } from './user.interface';
 import { IResponseBase } from '../interfaces/dataResponse.interface';
 
 @Controller('user')

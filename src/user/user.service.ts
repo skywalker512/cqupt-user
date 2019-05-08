@@ -19,14 +19,19 @@ export class UserService {
    * @param 创建用户时输入信息
    */
   async register(mobile: string, password: string) {
+
     if (!(mobile || password)) {
       throw new RpcException({ code: 406, message: ('请确保用户信息正确') })
+    }
+
+    if (await this.userRepo.findOne({ where: { mobile } })) {
+      throw new RpcException({ code: 409, message: '电话号码存在' });
     }
 
     if (password) {
       password = await this.cryptoUtil.encryptPassword(password)
     }
-    const user = await this.userRepo.save(this.userRepo.create())
+    const user = await this.userRepo.save(this.userRepo.create({ mobile, password }))
     const tokenInfo = await this.authService.createToken({ mobile: user.mobile });
     return { tokenInfo, user }
   }
