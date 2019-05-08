@@ -4,7 +4,7 @@ package cqupt_user;
 
 service UserController {
   rpc CreateUser(CreateUserRequest) returns (StringDataResponse) {}
-  rpc FindAllUsers() returns (FindAllUsersResponse) {}
+  rpc FindAllUsers(FindDataByPageRequest) returns (FindAllUsersResponse) {}
 }
 
 message CreateUserRequest {
@@ -25,6 +25,11 @@ message FindAllUsersResponse {
   int32 code = 1;
   string message = 2;
   repeated UserData result = 3;
+}
+
+message FindDataByPageRequest {
+  int32 pageNumber = 1;
+  int32 pageSize = 2;
 }
 
 message UserData {
