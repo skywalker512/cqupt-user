@@ -3,9 +3,9 @@ syntax = "proto3";
 package cqupt_user;
 
 service UserController {
-  rpc Register(RegisterReq) returns (RegisterRes) {}
+  rpc Register(RegisterReq) returns (UserRes) {}
+  rpc Login(LoginReq) returns (UserRes) {}
   rpc FindAllUsers(FindDataByPageReq) returns (FindAllUsersRes) {}
-  rpc Login(LoginReq) returns (LoginRes) {}
 }
 
 message StringDataResponse {
@@ -31,35 +31,25 @@ message RegisterReq {
   string password = 2;
 }
 
-message RegisterRes {
-  int32 code = 1;
-  string message = 2;
-  RegisterResult result = 3;
-  message RegisterResult {
-    TokenInfo tokenInfo = 1;
-    UserData user = 2;
-  }
-}
-
 message LoginReq {
   string mobile = 1;
   string password = 2;
-}
-
-message LoginRes {
-  int32 code = 1;
-  string message = 2;
-  LoginResult result = 3;
-  message LoginResult {
-    TokenInfo tokenInfo = 1;
-    UserData user = 2;
-  }
 }
 
 message FindAllUsersRes {
   int32 code = 1;
   string message = 2;
   repeated UserData result = 3;
+}
+
+message UserRes {
+  int32 code = 1;
+  string message = 2;
+  repeated UserResult result = 3;
+  message UserResult {
+    TokenInfo tokenInfo = 1;
+    UserData user = 2;
+  }
 }
 
 message FindDataByPageReq {

@@ -33,7 +33,7 @@ export class UserService {
     }
     const user = await this.userRepo.save(this.userRepo.create({ mobile, password }))
     const tokenInfo = await this.authService.createToken({ mobile: user.mobile });
-    return { tokenInfo, user }
+    return [{ tokenInfo, user }]
   }
   /**
    * 查找所有用户
@@ -61,6 +61,6 @@ export class UserService {
     }
 
     const tokenInfo = await this.authService.createToken({ mobile });
-    return { tokenInfo, user }
+    return [{ tokenInfo, user }]
   }
 }
