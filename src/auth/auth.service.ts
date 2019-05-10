@@ -8,7 +8,8 @@ export class AuthService {
 
     // TODO: 配置有效期
     async createToken(payload: JwtPayload): Promise<JwtReply> {
-        const accessToken = jwt.sign(payload, 'secretKey', { expiresIn: '1d' });
-        return { accessToken, expiresIn: 60 * 60 * 24 };
+        const accessToken = jwt.sign(payload, 'secretKey', { expiresIn: '1y' })
+        const result = <{ userId: string, iat: number, exp: number }>jwt.verify(accessToken, 'secretKey')
+        return { accessToken, expiresIn: result.exp }
     }
 }

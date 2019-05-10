@@ -1,5 +1,5 @@
 export interface JwtPayload {
-  mobile: string;
+  userId: string;
   options?: any;
 }
 
