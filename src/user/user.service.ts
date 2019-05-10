@@ -32,7 +32,7 @@ export class UserService {
       password = await this.cryptoUtil.encryptPassword(password)
     }
     const user = await this.userRepo.save(this.userRepo.create({ mobile, password }))
-    const tokenInfo = await this.authService.createToken({ mobile: user.mobile });
+    const tokenInfo = await this.authService.createToken({ userId: user.id });
     return { tokenInfo, user }
   }
   /**
@@ -66,7 +66,7 @@ export class UserService {
       throw new RpcException({ code: 406, message: '密码错误' });
     }
 
-    const tokenInfo = await this.authService.createToken({ mobile });
+    const tokenInfo = await this.authService.createToken({ userId: user.id });
     return { tokenInfo, user }
   }
 }
