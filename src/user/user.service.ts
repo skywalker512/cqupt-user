@@ -33,14 +33,20 @@ export class UserService {
     }
     const user = await this.userRepo.save(this.userRepo.create({ mobile, password }))
     const tokenInfo = await this.authService.createToken({ mobile: user.mobile });
-    return [{ tokenInfo, user }]
+    return { tokenInfo, user }
   }
   /**
    * 查找所有用户
    */
   async findAllUsers() {
     const users = await this.userRepo.find()
-    return users
+    return {users}
+  }
+
+  async findOneUser(type: string, data: any) {
+    const user = await this.userRepo.findOne({ where: { [type]: data[type] } })
+    if (!user) throw new RpcException({ code: 404, message: '用户不存在' })
+    return {user}
   }
 
   /**
@@ -61,6 +67,6 @@ export class UserService {
     }
 
     const tokenInfo = await this.authService.createToken({ mobile });
-    return [{ tokenInfo, user }]
+    return { tokenInfo, user }
   }
 }

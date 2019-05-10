@@ -16,6 +16,12 @@ export class UserController {
   }
 
   @GrpcMethod()
+  async findOneUser(payload: { mobile: string, type: string }): Promise<IResponseBase>{
+    const result = await this.userService.findOneUser(payload.type, payload)
+    return { code: 200, message: '用户查询成功', result }
+  }
+
+  @GrpcMethod()
   async findAllUsers(): Promise<IResponseBase> {
     const result = await this.userService.findAllUsers()
     return { code: 200, message: '查询所有用户成功', result }
