@@ -17,7 +17,7 @@ export class CardService {
   async creatCard(stuNum: string, name: string, departmentId: string, stuId?: number, userId?: string) {
     let input:any = stuId ? { stuId } : {}
     if (userId) {
-      const user = await this.userService.findOneUser('id', { id: userId })
+      const user = await this.userService.findOneUser({ id: userId })
       input = { ...input, user }
     }
     const department = await this.departmentService.findDepartment(departmentId)
@@ -25,8 +25,9 @@ export class CardService {
     return card
   }
 
-  async findOneCard(type: string, data: any ) {
-    const card = await this.cardRepo.findOne({ where: { [type]: data[type] }, relations: ['department', 'user'] })
+  async findOneCard(data: any, relations: string[] = ['department', 'user'] ) {
+    const type = Object.keys(data)[0]
+    const card = await this.cardRepo.findOne({ where: { [type]: data[type] }, relations })
     if (!card) throw new RpcException({ code: 404, message: '卡片不存在' })
     return card
   }

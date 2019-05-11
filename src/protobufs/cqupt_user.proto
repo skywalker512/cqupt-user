@@ -3,9 +3,9 @@ syntax = "proto3";
 package cqupt_user;
 
 service UserController {
-  rpc CreatUser(UserReq) returns (UserWithTokenRes);
-  rpc Login(UserReq) returns (UserWithTokenRes);
-  rpc FindOneUser (UserReq) returns (UserRes);
+  rpc CreatUser(OneUserReq) returns (UserWithTokenRes);
+  rpc Login(OneUserReq) returns (UserWithTokenRes);
+  rpc FindOneUser (OneUserReq) returns (UserRes);
   rpc FindAllUsers(FindDataByPageReq) returns (UsersRes);
 }
 
@@ -20,11 +20,11 @@ message UserData {
   string mobile = 2;
   string createdAt = 3;
   string updatedAt = 4;
+  Card card = 5;
 }
 
-message UserReq {
-  string type = 1;
-  UserData data = 2;
+message OneUserReq {
+  UserData data = 1;
 }
 
 message UserRes {
@@ -82,16 +82,17 @@ message DepartmentsRes {
 
 service CardController {
   rpc CreatCard(CreatCardReq) returns (CardRes);
-  rpc FindOneCard(FindOneCardReq) returns (CardRes);
+  rpc FindOneCard(OneCardReq) returns (CardRes);
 }
 
 message Card {
   string stuNum = 1;
-  string user = 2;
+  UserData user = 2;
   string name = 3;
   int32 stuId = 4;
   string createdAt = 5;
   string updatedAt = 6;
+  Department department = 7;
 }
 
 message CreatCardReq {
@@ -102,9 +103,8 @@ message CreatCardReq {
   string departmentId = 5;
 }
 
-message FindOneCardReq {
-  string type = 1;
-  Card data = 2;
+message OneCardReq {
+  Card data = 1;
 }
 
 message CardRes {

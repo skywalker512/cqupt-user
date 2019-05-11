@@ -10,23 +10,23 @@ export class UserController {
   ) { }
 
   @GrpcMethod()
-  async creatUser(payload: { type: string, data: any }): Promise<IResponseBase>{
-    const { type, data } = payload
-    const { user, tokenInfo } = await this.userService.creatUser(type, data)
+  async creatUser(payload: { data: any }): Promise<IResponseBase>{
+    const { data } = payload
+    const { user, tokenInfo } = await this.userService.creatUser(data)
     return { code: 200, message: '用户创建成功', user, tokenInfo }
   }
 
   @GrpcMethod()
-  async login(payload: { type: string, data: any }): Promise<IResponseBase> {
-    const { type, data } = payload
-    const { user, tokenInfo } = await this.userService.login(type, data)
+  async login(payload: { data: any }): Promise<IResponseBase> {
+    const { data } = payload
+    const { user, tokenInfo } = await this.userService.login(data)
     return { code: 200, message: '登录成功', user, tokenInfo }
   }
 
   @GrpcMethod()
-  async findOneUser(payload: { type: string, data: any }): Promise<IResponseBase>{
-    const { type, data } = payload
-    const user = await this.userService.findOneUser(type, data)
+  async findOneUser(payload: { data: any }): Promise<IResponseBase>{
+    const { data } = payload
+    const user = await this.userService.findOneUser(data)
     return { code: 200, message: '用户查询成功', user }
   }
 

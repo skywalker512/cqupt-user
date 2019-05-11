@@ -16,9 +16,9 @@ export class CardController {
   }
 
   @GrpcMethod()
-  async findOneCard(payload: { type: string, data: any }) {
-    const { type, data } = payload
-    const card = await this.cardService.findOneCard(type, data)
+  async findOneCard(payload: { data: any }) {
+    const { data } = payload
+    const card = await this.cardService.findOneCard(data)
     return { code: 200, message: '卡片查询成功', card }
   }
 }

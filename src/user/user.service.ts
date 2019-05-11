@@ -18,12 +18,13 @@ export class UserService {
    * 创建用户
    * @param 创建用户时输入信息
    */
-  async creatUser(type: string, data: any) {
+  async creatUser(data: any) {
+    const type = Object.keys(data)[0]
     if (await this.userRepo.findOne({ where: { [type]: data[type]  } })) {
       throw new RpcException({ code: 409, message: '你的信息已存在' });
     }
     const user = await this.userRepo.save(this.userRepo.create({ [type]: data[type] }))
-    const tokenInfo = await this.authService.createToken({ userId: user.id });
+    const tokenInfo = await this.authService.createToken({ userId: user.id })
     return { tokenInfo, user }
   }
   /**
@@ -34,7 +35,8 @@ export class UserService {
     return users
   }
 
-  async findOneUser(type: string, data: any) {
+  async findOneUser(data: any) {
+    const type = Object.keys(data)[0]
     const user = await this.userRepo.findOne({ where: { [type]: data[type] } })
     if (!user) throw new RpcException({ code: 404, message: '用户不存在' })
     return user
@@ -46,10 +48,15 @@ export class UserService {
   * @param mobile 电话
   * @param password 密码
   */
-  async login(type: string, data: any) {
-    const user = await this.userRepo.findOne({ where: { [type]: data[type] } })
+  async login(data: any) {
+    const type = Object.keys(data)[0]
+    const user = await this.userRepo.createQueryBuilder('user')
+      .leftJoinAndSelect('user.card', 'card')
+      .leftJoinAndSelect('card.department', 'department')
+      .where(`user.${type} = :${type}`, { [type]: data[type] })
+      .getOne()
     if (!user) throw new RpcException({ code: 404, message: '用户不存在' })
-    const tokenInfo = await this.authService.createToken({ userId: user.id });
+    const tokenInfo = await this.authService.createToken({ userId: user.id })
     return { tokenInfo, user }
   }
 }
