@@ -20,9 +20,9 @@ export class CardService {
       const user = await this.userService.findOneUser('id', { id: userId })
       input = { ...input, user }
     }
-    // const department = await this.departmentService.findDepartment(departmentId)
-    // const card = await this.cardRepo.save(this.cardRepo.create({ ...input, stuNum, name, department }))
-    // return card
+    const department = await this.departmentService.findDepartment(departmentId)
+    const card = await this.cardRepo.save(this.cardRepo.create({ ...input, stuNum, name, department }))
+    return card
   }
 
   async findOneCard(type: string, data: any ) {

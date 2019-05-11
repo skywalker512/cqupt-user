@@ -89,14 +89,14 @@ message Card {
   string stuNum = 1;
   string user = 2;
   string name = 3;
-  string stuId = 4;
+  int32 stuId = 4;
   string createdAt = 5;
   string updatedAt = 6;
 }
 
 message CreatCardReq {
   string stuNum = 1;
-  string stuId = 2;
+  int32 stuId = 2;
   string name = 3;
   string userId = 4;
   string departmentId = 5;
