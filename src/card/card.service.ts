@@ -26,7 +26,7 @@ export class CardService {
   }
 
   async findOneCard(type: string, data: any ) {
-    const card = await this.cardRepo.findOne({ where: { [type]: data[type] } })
+    const card = await this.cardRepo.findOne({ where: { [type]: data[type] }, relations: ['department', 'user'] })
     if (!card) throw new RpcException({ code: 404, message: '卡片不存在' })
     return card
   }
