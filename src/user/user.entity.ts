@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from "typeorm";
+import { Card } from "../card/card.entity";
 
 @Entity('user')
 export class User {
@@ -10,10 +11,9 @@ export class User {
   })
   mobile: string
 
-  @Column({
-    unique: true,
-  })
-  password: string
+  @OneToOne(type => Card, card => card.userId)
+  @JoinColumn()
+  card: Card
 
   @CreateDateColumn()
   createdAt: string

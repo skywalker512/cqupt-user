@@ -6,7 +6,7 @@ export const grpcClientOptions: ClientOptions = {
   options: {
     url: '0.0.0.0' + ':50053',
     package: 'cqupt_user',
-    protoPath: join(__dirname, './user/user.proto'),
+    protoPath: join(__dirname, './protobufs/cqupt_user.proto'),
     loader: {
       arrays: true
     }
