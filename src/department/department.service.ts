@@ -22,4 +22,9 @@ export class DepartmentService {
     const departments = await this.departmentRepo.find()
     return departments
   }
+
+  async findDepartment(id: string) {
+    const department = await this.departmentRepo.findOne(id)
+    return department
+  }
 }

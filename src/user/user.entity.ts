@@ -11,7 +11,7 @@ export class User {
   })
   mobile: string
 
-  @OneToOne(type => Card, card => card.userId)
+  @OneToOne(type => Card, card => card.user)
   @JoinColumn()
   card: Card
 

@@ -8,7 +8,7 @@ export class Card {
   stuNum: string
 
   @OneToOne(type => User, user => user.card)
-  userId: User
+  user: User
 
   @Column()
   name: string

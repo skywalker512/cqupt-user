@@ -79,3 +79,38 @@ message DepartmentsRes {
   string message = 2;
   repeated Department departments = 3;
 }
+
+service CardController {
+  rpc CreatCard(CreatCardReq) returns (CardRes);
+  rpc FindOneCard(FindOneCardReq) returns (CardRes);
+}
+
+message Card {
+  string stuNum = 1;
+  string user = 2;
+  string name = 3;
+  string stuId = 4;
+  string createdAt = 5;
+  string updatedAt = 6;
+}
+
+message CreatCardReq {
+  string stuNum = 1;
+  string stuId = 2;
+  string name = 3;
+  string userId = 4;
+  string departmentId = 5;
+}
+
+message FindOneCardReq {
+  string type = 1;
+  Card data = 2;
+}
+
+message CardRes {
+  int32 code = 1;
+  string message = 2;
+  Card card = 3;
+}
+
+

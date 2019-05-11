@@ -2,31 +2,32 @@ import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Card } from './card.entity';
 import { Repository } from 'typeorm';
-import { Department } from '../department/department.entity';
-import { cqupt_user } from '../grpc/generated';
-import { GrpcClientFactory } from '../grpc/grpc.client-factory';
+import { UserService } from '../user/user.service';
+import { RpcException } from '@nestjs/microservices';
+import { DepartmentService } from '../department/department.service';
 
 @Injectable()
 export class CardService {
-  onModuleInit() {
-    this.userService = this.grpcClientFactory.userModuleClient.getService('UserController');
-  }
-
   constructor(
     @InjectRepository(Card) private readonly cardRepo: Repository<Card>,
-    @Inject(GrpcClientFactory) private readonly grpcClientFactory: GrpcClientFactory
+    @Inject(UserService) private readonly userService: UserService,
+    @Inject(DepartmentService) private readonly departmentService: DepartmentService,
   ) {}
-  private userService: cqupt_user.UserController
 
-  async creatCard(stuNum: string, name: string, department: Department, stuId?: number, userId?: string) {
-    let input = stuId ? { stuId } : {}
+  async creatCard(stuNum: string, name: string, departmentId: string, stuId?: number, userId?: string) {
+    let input:any = stuId ? { stuId } : {}
     if (userId) {
-      this.userService.findOneUser({  })
+      const user = await this.userService.findOneUser('id', { id: userId })
+      input = { ...input, user }
     }
-
-    const card = await this.cardRepo.save(this.cardRepo.create({ ...input, stuNum, name, department }))
-    return card
+    // const department = await this.departmentService.findDepartment(departmentId)
+    // const card = await this.cardRepo.save(this.cardRepo.create({ ...input, stuNum, name, department }))
+    // return card
   }
 
-  // async findOneCard(stuNum: string, name: string, stuId: number)
+  async findOneCard(type: string, data: any ) {
+    const card = await this.cardRepo.findOne({ where: { [type]: data[type] } })
+    if (!card) throw new RpcException({ code: 404, message: '卡片不存在' })
+    return card
+  }
 }
