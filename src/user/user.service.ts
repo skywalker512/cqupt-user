@@ -18,20 +18,11 @@ export class UserService {
    * 创建用户
    * @param 创建用户时输入信息
    */
-  async register(mobile: string, password: string) {
-
-    if (!(mobile || password)) {
-      throw new RpcException({ code: 406, message: ('请确保用户信息正确') })
+  async creatUser(type: string, data: any) {
+    if (await this.userRepo.findOne({ where: { [type]: data[type]  } })) {
+      throw new RpcException({ code: 409, message: '你的信息已存在' });
     }
-
-    if (await this.userRepo.findOne({ where: { mobile } })) {
-      throw new RpcException({ code: 409, message: '电话号码存在' });
-    }
-
-    if (password) {
-      password = await this.cryptoUtil.encryptPassword(password)
-    }
-    const user = await this.userRepo.save(this.userRepo.create({ mobile, password }))
+    const user = await this.userRepo.save(this.userRepo.create({ [type]: data[type] }))
     const tokenInfo = await this.authService.createToken({ userId: user.id });
     return { tokenInfo, user }
   }
@@ -40,13 +31,13 @@ export class UserService {
    */
   async findAllUsers() {
     const users = await this.userRepo.find()
-    return {users}
+    return users
   }
 
   async findOneUser(type: string, data: any) {
     const user = await this.userRepo.findOne({ where: { [type]: data[type] } })
     if (!user) throw new RpcException({ code: 404, message: '用户不存在' })
-    return {user}
+    return user
   }
 
   /**
@@ -55,17 +46,9 @@ export class UserService {
   * @param mobile 电话
   * @param password 密码
   */
-  async login(mobile: string, password: string) {
-    const user = await this.userRepo.createQueryBuilder('user')
-      .where('user.mobile = :mobile', { mobile })
-      // .orWhere('user.email = :email', { email: email.toLocaleLowerCase() })
-      .getOne()
-
+  async login(type: string, data: any) {
+    const user = await this.userRepo.findOne({ where: { [type]: data[type] } })
     if (!user) throw new RpcException({ code: 404, message: '用户不存在' })
-    if (!await this.cryptoUtil.checkPassword(password, user.password)) {
-      throw new RpcException({ code: 406, message: '密码错误' });
-    }
-
     const tokenInfo = await this.authService.createToken({ userId: user.id });
     return { tokenInfo, user }
   }

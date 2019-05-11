@@ -3,10 +3,10 @@ syntax = "proto3";
 package cqupt_user;
 
 service UserController {
-  rpc Register(RegisterReq) returns (UserRes) {}
-  rpc Login(LoginReq) returns (UserRes) {}
-  rpc FindOneUser (FindOneUserReq) returns (FindOneUserRes);
-  rpc FindAllUsers(FindDataByPageReq) returns (FindAllUsersRes) {}
+  rpc CreatUser(UserReq) returns (UserWithTokenRes) {}
+  rpc Login(UserReq) returns (UserWithTokenRes) {}
+  rpc FindOneUser (UserReq) returns (UserRes) {}
+  rpc FindAllUsers(FindDataByPageReq) returns (UsersRes) {}
 }
 
 message StringDataResponse {
@@ -22,53 +22,31 @@ message UserData {
   string updatedAt = 4;
 }
 
-message TokenInfo {
-  int32 expiresIn = 1;
-  string accessToken = 2;
-}
-
-message RegisterReq {
-  string mobile = 1;
-  string password = 2;
-}
-
-message LoginReq {
-  string mobile = 1;
-  string password = 2;
+message UserReq {
+  string type = 1;
+  UserData data = 2;
 }
 
 message UserRes {
+  UserData user = 1;
+}
+
+message UsersRes {
+  repeated UserData users = 1;
+}
+
+message UserWithTokenRes {
   int32 code = 1;
   string message = 2;
-  UserResult result = 3;
-  message UserResult {
-    TokenInfo tokenInfo = 1;
-    UserData user = 2;
+  UserData user = 3;
+  TokenInfo tokenInfo = 4;
+  message TokenInfo {
+    int32 expiresIn = 1;
+    string accessToken = 2;
   }
 }
 
 message FindDataByPageReq {
   int32 pageNumber = 1;
   int32 pageSize = 2;
-}
-
-message FindUserResult {
-  UserData user = 1;
-}
-
-message FindAllUsersRes {
-  int32 code = 1;
-  string message = 2;
-  repeated FindUserResult result = 3;
-}
-
-message FindOneUserReq {
-  string mobile = 1;
-  string type = 2;
-}
-
-message FindOneUserRes {
-  int32 code = 1;
-  string message = 2;
-  FindUserResult result = 3;
 }
