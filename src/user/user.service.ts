@@ -20,7 +20,7 @@ export class UserService {
    */
   async creatUser(data: any) {
     const type = Object.keys(data)[0]
-    if (await this.userRepo.findOne({ where: { [type]: data[type]  } })) {
+    if (await this.userRepo.findOne({ where: data })) {
       throw new RpcException({ code: 409, message: '你的信息已存在' });
     }
     const user = await this.userRepo.save(this.userRepo.create({ [type]: data[type] }))
@@ -49,6 +49,10 @@ export class UserService {
   * @param password 密码
   */
   async login(data: any) {
+    const isHave = await this.userRepo.findOne({ where: data })
+    if (!isHave) {
+      return await this.creatUser(data)
+    }
     const type = Object.keys(data)[0]
     const user = await this.userRepo.createQueryBuilder('user')
       .leftJoinAndSelect('user.card', 'card')
