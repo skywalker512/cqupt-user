@@ -18,7 +18,7 @@ export class UserService {
    * 创建用户
    * @param 创建用户时输入信息
    */
-  async creatUser(data: any) {
+  async creatUser(data: User) {
     const type = Object.keys(data)[0]
     if (await this.userRepo.findOne({ where: data })) {
       throw new RpcException({ code: 409, message: '你的信息已存在' });

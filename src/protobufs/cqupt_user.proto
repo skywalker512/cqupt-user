@@ -3,10 +3,10 @@ syntax = "proto3";
 package cqupt_user;
 
 service UserController {
-  rpc CreatUser(OneUserReq) returns (UserWithTokenRes);
-  rpc Login(OneUserReq) returns (UserWithTokenRes);
-  rpc FindOneUser (OneUserReq) returns (UserRes);
-  rpc FindAllUsers(FindDataByPageReq) returns (UsersRes);
+  rpc CreatUser(CreatUserReq) returns (CreatUserRes);
+  rpc Login(LoginReq) returns (LoginRes);
+  rpc FindOneUser (FindOneUserReq) returns (FindOneUserRes);
+  rpc FindAllUsers (FindAllUsersReq) returns (FindAllUsersRes);
 }
 
 message StringDataResponse {
@@ -23,38 +23,67 @@ message UserData {
   Card card = 5;
 }
 
-message OneUserReq {
+message TokenInfo {
+  int32 expiresIn = 1;
+  string accessToken = 2;
+}
+
+// CreatUser
+message CreatUserReq {
   UserData data = 1;
 }
 
-message UserRes {
-  UserData user = 1;
-}
-
-message UsersRes {
-  repeated UserData users = 1;
-}
-
-message UserWithTokenRes {
+message CreatUserRes {
   int32 code = 1;
   string message = 2;
   UserData user = 3;
   TokenInfo tokenInfo = 4;
-  message TokenInfo {
-    int32 expiresIn = 1;
-    string accessToken = 2;
-  }
+}
+/// CreatUser
+
+// Login
+message LoginReq {
+  UserData data = 1;
+  string code = 2;
 }
 
-message FindDataByPageReq {
+message LoginRes {
+  int32 code = 1;
+  string message = 2;
+  UserData user = 3;
+  TokenInfo tokenInfo = 4;
+}
+/// Login
+
+// FindOneUser
+message FindOneUserReq {
+  UserData data = 1;
+}
+
+message FindOneUserRes {
+  int32 code = 1;
+  string message = 2;
+  UserData user = 3;
+}
+/// FindOneUser
+
+// FindAllUsers
+message FindAllUsersReq {
   int32 pageNumber = 1;
   int32 pageSize = 2;
 }
 
+message FindAllUsersRes {
+  int32 code = 1;
+  string message = 2;
+  repeated UserData user = 3;
+}
+/// FindAllUsers
+
 
 service DepartmentController {
-  rpc CreatDepartment(DepartmentReq) returns (DepartmentRes);
-  rpc FindAllDepartments(FindDataByPageReq) returns (DepartmentsRes);
+  rpc CreatDepartment(CreatDepartmentReq) returns (CreatDepartmentRes);
+  rpc FindAllDepartments(FindAllDepartmentsReq) returns (FindAllDepartmentsRes);
 }
 
 message Department {
@@ -64,25 +93,30 @@ message Department {
   string updatedAt = 4;
 }
 
-message DepartmentReq {
+message CreatDepartmentReq {
   string name = 1;
 }
 
-message DepartmentRes {
+message CreatDepartmentRes {
   int32 code = 1;
   string message = 2;
   Department department = 3;
 }
 
-message DepartmentsRes {
+message FindAllDepartmentsReq {
+  int32 pageNumber = 1;
+  int32 pageSize = 2;
+}
+
+message FindAllDepartmentsRes {
   int32 code = 1;
   string message = 2;
   repeated Department departments = 3;
 }
 
 service CardController {
-  rpc CreatCard(CreatCardReq) returns (CardRes);
-  rpc FindOneCard(OneCardReq) returns (CardRes);
+  rpc CreatCard(CreatCardReq) returns (CreatCardRes);
+  rpc FindOneCard(FindOneCardReq) returns (FindOneCardRes);
 }
 
 message Card {
@@ -103,11 +137,17 @@ message CreatCardReq {
   string departmentId = 5;
 }
 
-message OneCardReq {
+message CreatCardRes {
+  int32 code = 1;
+  string message = 2;
+  Card card = 3;
+}
+
+message FindOneCardReq {
   Card data = 1;
 }
 
-message CardRes {
+message FindOneCardRes {
   int32 code = 1;
   string message = 2;
   Card card = 3;
