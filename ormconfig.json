@@ -4,7 +4,7 @@
   "host": "192.168.99.100",
   "port": 5432,
   "username": "postgres",
-  "database": "module_user",
+  "database": "cqupt_user",
   "entities": ["src/**/*.entity{.ts,.js}"],
   "synchronize": true
 }

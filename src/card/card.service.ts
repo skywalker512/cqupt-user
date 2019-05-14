@@ -21,6 +21,7 @@ export class CardService {
       input = { ...input, user }
     }
     const department = await this.departmentService.findDepartment(departmentId)
+    if (await this.cardRepo.findOne({where: { stuNum }})) throw new RpcException({ code: 4001, message: '卡片已经存在' })
     const card = await this.cardRepo.save(this.cardRepo.create({ ...input, stuNum, name, department }))
     return card
   }

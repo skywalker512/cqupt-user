@@ -1,10 +1,13 @@
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, PrimaryColumn, OneToOne } from "typeorm";
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, PrimaryColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Department } from "../department/department.entity";
 import { User } from "../user/user.entity";
 
 @Entity()
 export class Card {
-  @PrimaryColumn({ unique: true })
+  @PrimaryGeneratedColumn("uuid")
+  id: string
+
+  @Column({ unique: true })
   stuNum: string
 
   @OneToOne(type => User, user => user.card)
@@ -16,8 +19,8 @@ export class Card {
   @ManyToOne(type => Department, department=>department.cards)
   department: Department
 
-  @Column({ unique: true })
-  stuId: number
+  @Column()
+  stuId: string
 
   @CreateDateColumn()
   createdAt: string

@@ -131,7 +131,7 @@ message Card {
 
 message CreatCardReq {
   string stuNum = 1;
-  int32 stuId = 2;
+  string stuId = 2;
   string name = 3;
   string userId = 4;
   string departmentId = 5;
