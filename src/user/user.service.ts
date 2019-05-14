@@ -49,7 +49,6 @@ export class UserService {
   * @param password 密码
   */
   async login(data: any) {
-    console.log(data)
     const isHave = await this.userRepo.findOne({ where: data })
     if (!isHave) {
       return await this.creatUser(data)
