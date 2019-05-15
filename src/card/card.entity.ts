@@ -19,7 +19,9 @@ export class Card {
   @ManyToOne(type => Department, department=>department.cards)
   department: Department
 
-  @Column()
+  @Column({
+    nullable: true
+  })
   stuId: string
 
   @CreateDateColumn()
