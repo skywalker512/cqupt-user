@@ -16,7 +16,7 @@ export class UserService {
 
   /**
    * 创建用户
-   * @param 创建用户时输入信息
+   * @param data 创建用户时输入信息
    */
   async creatUser(data: User) {
     const type = Object.keys(data)[0]
@@ -24,8 +24,7 @@ export class UserService {
       throw new RpcException({ code: 409, message: '你的信息已存在' });
     }
     const user = await this.userRepo.save(this.userRepo.create({ [type]: data[type] }))
-    const tokenInfo = await this.authService.createToken({ userId: user.id })
-    return { tokenInfo, user }
+    return user
   }
   /**
    * 查找所有用户
@@ -43,23 +42,19 @@ export class UserService {
   }
 
   /**
-  * 用户登录
-  *
-  * @param mobile 电话
-  * @param password 密码
-  */
+   * 用户登录
+   * @param data 用户信息
+   */
   async login(data: any) {
     const isHave = await this.userRepo.findOne({ where: data })
+    let user: User
     if (!isHave) {
-      return await this.creatUser(data)
+      user = await this.creatUser(data)
     }
     const type = Object.keys(data)[0]
-    const user = await this.userRepo.createQueryBuilder('user')
-      .leftJoinAndSelect('user.card', 'card')
-      .leftJoinAndSelect('card.department', 'department')
+    user = await this.userRepo.createQueryBuilder('user')
       .where(`user.${type} = :${type}`, { [type]: data[type] })
       .getOne()
-    if (!user) throw new RpcException({ code: 404, message: '用户不存在' })
     const tokenInfo = await this.authService.createToken({ userId: user.id })
     return { tokenInfo, user }
   }

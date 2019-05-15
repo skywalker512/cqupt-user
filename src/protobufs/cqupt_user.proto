@@ -20,7 +20,6 @@ message UserData {
   string mobile = 2;
   string createdAt = 3;
   string updatedAt = 4;
-  Card card = 5;
 }
 
 message TokenInfo {
@@ -37,7 +36,6 @@ message CreatUserRes {
   int32 code = 1;
   string message = 2;
   UserData user = 3;
-  TokenInfo tokenInfo = 4;
 }
 /// CreatUser
 
@@ -144,7 +142,10 @@ message CreatCardRes {
 }
 
 message FindOneCardReq {
-  Card data = 1;
+  string stuNum = 1;
+  string stuId = 2;
+  string name = 3;
+  string userId = 4;
 }
 
 message FindOneCardRes {

@@ -4,13 +4,10 @@ import { User } from "../user/user.entity";
 
 @Entity()
 export class Card {
-  @PrimaryGeneratedColumn("uuid")
-  id: string
-
-  @Column({ unique: true })
+  @PrimaryColumn({ unique: true })
   stuNum: string
 
-  @OneToOne(type => User, user => user.card)
+  @OneToOne(type => User, user => user.card, { nullable: true })
   user: User
 
   @Column()
