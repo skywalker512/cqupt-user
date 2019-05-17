@@ -43,7 +43,16 @@ export class CardService {
 
   async findOneCard(data: any, relations: string[] = ['department'] ) {
     const type = Object.keys(data)[0]
-    const card = await this.cardRepo.findOne({ where: { [type]: data[type] }, relations })
+    let card: Card
+    if (type === 'user') {
+      card = await this.cardRepo.createQueryBuilder('card')
+        .leftJoin('card.user', 'user')
+        .leftJoinAndSelect('card.department', 'department')
+        .where('user.id = :userId', { userId: data[type] })
+        .getOne()
+    } else {
+      card = await this.cardRepo.findOne({ where: { [type]: data[type] }, relations })
+    }
     if (!card) throw new RpcException({ code: 404, message: '卡片不存在' })
     return card
   }
