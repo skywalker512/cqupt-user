@@ -41,12 +41,12 @@ export class CardService {
     return card
   }
 
-  async findOneCard(data: any, relations: string[] = ['department'] ) {
+  async findOneCard(data: any, relations: string[] = ['department', 'user'] ) {
     const type = Object.keys(data)[0]
     let card: Card
     if (type === 'user') {
       card = await this.cardRepo.createQueryBuilder('card')
-        .leftJoin('card.user', 'user')
+        .leftJoinAndSelect('card.user', 'user')
         .leftJoinAndSelect('card.department', 'department')
         .where('user.id = :userId', { userId: data[type] })
         .getOne()
