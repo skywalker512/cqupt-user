@@ -13,5 +13,6 @@ RUN apk --no-cache add tzdata ca-certificates && \
     cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 WORKDIR /app
+RUN [ "yarn" ]
 
 CMD [ "yarn","start:prodts" ]
