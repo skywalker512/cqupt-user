@@ -12,4 +12,10 @@ export class AuthService {
         const accessToken = jwt.sign({...payload, exp: expiresIn}, 'secretKey')
         return { accessToken, expiresIn }
     }
+
+    async createSuperAdminToken(payload: { userId: string }): Promise<JwtReply> {
+        const expiresIn = Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 1200)
+        const accessToken = jwt.sign({...payload, role: 'admin', exp: expiresIn}, 'secretKey')
+        return { accessToken, expiresIn }
+    }
 }

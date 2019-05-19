@@ -23,6 +23,13 @@ export class UserController {
   }
 
   @GrpcMethod()
+  async superAdminLogin(payload: { data: any }) {
+    const { data } = payload
+    const { user, tokenInfo } = await this.userService.superAdminLogin(data)
+    return { code: 200, message: '超级管理员登录成功', user, tokenInfo }
+  }
+
+  @GrpcMethod()
   async findOneUser(payload: { data: any }){
     const { data } = payload
     const user = await this.userService.findOneUser(data)

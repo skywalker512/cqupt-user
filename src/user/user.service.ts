@@ -58,4 +58,12 @@ export class UserService {
     const tokenInfo = await this.authService.createToken({ userId: user.id })
     return { tokenInfo, user }
   }
+
+  async superAdminLogin(data: any) {
+    const { mobile } = data
+    const user = await this.userRepo.find({ order: { createdAt: 'ASC' }, take: 1 })
+    if (user[0].mobile !== mobile) throw new RpcException({ code: 400, message: '超级管理员登录失败' })
+    const tokenInfo = await this.authService.createSuperAdminToken({ userId: user[0].id })
+    return { tokenInfo, user }
+  }
 }

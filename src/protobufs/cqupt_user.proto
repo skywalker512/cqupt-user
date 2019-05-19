@@ -5,6 +5,7 @@ package cqupt_user;
 service UserController {
   rpc CreatUser(CreatUserReq) returns (CreatUserRes);
   rpc Login(LoginReq) returns (LoginRes);
+  rpc SuperAdminLogin(SuperAdminLoginReq) returns (SuperAdminLoginRes);
   rpc FindOneUser (FindOneUserReq) returns (FindOneUserRes);
   rpc FindAllUsers (FindAllUsersReq) returns (FindAllUsersRes);
 }
@@ -52,6 +53,18 @@ message LoginRes {
   TokenInfo tokenInfo = 4;
 }
 /// Login
+
+message SuperAdminLoginReq {
+  UserData data = 1;
+  string code = 2;
+}
+
+message SuperAdminLoginRes {
+  int32 code = 1;
+  string message = 2;
+  UserData user = 3;
+  TokenInfo tokenInfo = 4;
+}
 
 // FindOneUser
 message FindOneUserReq {
