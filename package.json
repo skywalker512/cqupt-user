@@ -8,6 +8,7 @@
     "build": "tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "ts-node-dev -r tsconfig-paths/register src/main.ts",
+    "start:prodts": "ts-node -r tsconfig-paths/register src/main.ts",
     "webpack": "webpack --config webpack.config.js",
     "start:dev": "nodemon",
     "start:debug": "nodemon --config nodemon-debug.json",
