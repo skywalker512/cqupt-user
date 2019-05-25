@@ -16,7 +16,7 @@ WORKDIR /app
 RUN [ "yarn" ]
 RUN yarn global add @zeit/ncc@beta
 RUN ncc build ./src/main.ts -o dist
-RUN rm -rf node_modules src
-RUN yarn global remove @zeit/ncc
+# RUN rm -rf node_modules src
+# RUN yarn global remove @zeit/ncc
 
 CMD [ "node","./dist/index.js" ]
